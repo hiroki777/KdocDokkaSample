@@ -1,0 +1,82 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'org.jetbrains.dokka'
+}
+
+android {
+    compileSdkVersion 29
+
+    defaultConfig {
+        applicationId "com.example.kdocdokkasample"
+        minSdkVersion 23
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.3.2'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.3.0'
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+}
+
+dokka {
+    outputFormat = "html"
+
+    configuration {
+        // 非推奨のメンバを表示しない
+        skipDeprecated = true
+
+        // ドキュメント化されなかったメンバを通知する
+        reportUndocumented = true
+
+        // 空のパッケージをスキップする
+        skipEmptyPackages = true
+
+        /*
+        アクセス修飾子がpublic以外のメンバを表示しない
+        ※ internalまで含めるというような設定はできない
+         */
+        includeNonPublic = false
+
+        // モジュール・パッケージに対する説明をするファイルを指定する
+        includes = ['packages.md']
+
+        /*
+        Android Developerへのリンクを張らない
+        ※ リンク先のURLが間違っていることがあるので
+         */
+        noAndroidSdkLink = true
+
+        // パッケージごとの説明
+        perPackageOption {
+            prefix = "com.example.kdocdokkasample.other"
+            // 該当パッケージをドキュメント化しない
+            suppress = true
+        }
+
+    }
+}
